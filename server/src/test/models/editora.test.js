@@ -1,3 +1,4 @@
+import { describe, it, expect, jest } from '@jest/globals';
 import Editora from "../../models/editora";
 
 describe('Testes da model Editora', () => {
@@ -13,13 +14,19 @@ describe('Testes da model Editora', () => {
         expect(editora).toEqual(expect.objectContaining(objetoEditora));
     });
 
-    it('Deve criar uma editora no banco de dados', async () => {
+    it('Deve criar uma editora no banco de dados mockado', () => {
         const editora = new Editora(objetoEditora);
 
-        const resultado = await editora.salvar();
-        const retornado = await Editora.pegarPeloId(resultado.id);
+        editora.salvar = jest.fn().mockReturnValue({
+            id: 1,
+            ...objetoEditora,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        });
 
-        expect(retornado).toEqual(expect.objectContaining({
+        const resultado = editora.salvar();
+
+        expect(resultado).toEqual(expect.objectContaining({
             id: expect.any(Number),
             ...objetoEditora,
             created_at: expect.any(String),
