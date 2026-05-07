@@ -1,21 +1,20 @@
 {
-  "name": "estudo_testes_nodejs",
+  "name": "1",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
+    "tests": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "eslint": "^10.3.0",
-    "globals": "^17.6.0",
-    "jest": "^30.3.0"
+    "jest": "^28.1.0"
   }
 }
