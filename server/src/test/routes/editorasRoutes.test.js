@@ -1,10 +1,12 @@
-import { describe, expect, it } from '@jest/globals';
+import { describe, expect, it, jest } from '@jest/globals';
 import app from '../../app';
 import request from 'supertest';
 
 let server;
 let idResposta;
 const nomeEditoraAtualizado = 'Editora Teste Atualizado';
+const cidadeEditoraAtualizado = 'Rio de Janeiro Atualizado';
+const emailEditoraAtualizado = 'emailAtualizado@email.com';
 
 beforeEach(() => {
     const PORT = 3000;
@@ -62,14 +64,22 @@ describe('Testes das rotas de editoras', () => {
     });
 
     describe('Requisições PUT em /editoras/:id', () => {
-        it('Deve atualizar o campo nome de uma editora', async () => {
-            const resposta = await request(app)
+        it.each([
+            ['nome', { nome: nomeEditoraAtualizado }],
+            ['cidade', { cidade: cidadeEditoraAtualizado }],
+            ['email', { email: emailEditoraAtualizado }]
+        ])('Deve atualizar o campo %s de uma editora', async (chave, param) => {
+            const requisicao = { request };
+            const spy = jest.spyOn(requisicao, 'request');
+
+            const resposta = await requisicao.request(app)
                 .put(`/editoras/${idResposta}`)
-                .send({ nome: nomeEditoraAtualizado })
+                .send(param)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200);
 
+            expect(spy).toHaveBeenCalled();
             expect(resposta.body.content[0].nome).toEqual(nomeEditoraAtualizado);
         });
     })
